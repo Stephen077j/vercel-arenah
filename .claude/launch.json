@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "arenah-frontend",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["vite", "--port", "8081", "--strictPort"],
+      "port": 8081
+    }
+  ]
+}

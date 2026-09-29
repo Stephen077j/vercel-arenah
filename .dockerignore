@@ -1,0 +1,26 @@
+# Jamais de secrets dans l'image : les variables viennent de docker-compose / .env
+.env
+.env.*
+!.env.example
+
+node_modules
+dist
+dist-ssr
+release
+build
+.vite
+*.log
+*.db
+*.sqlite
+*.sqlite3
+public/uploads/*
+!public/uploads/.gitkeep
+
+.git
+.claude
+docs
+Untitled-1
+txt.txt
+# Modèles d'IA : seul le dossier .cache/models est utile à l'image (réutilisé au build)
+.cache/*
+!.cache/models

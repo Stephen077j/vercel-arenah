@@ -1,0 +1,22 @@
+{
+  "name": "ARENAH Space",
+  "short_name": "ARENAH",
+  "description": "Votre plateforme self-service tout-en-un — Restaurant, Hôtel, Gym, Spectacles & plus",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#d4a843",
+  "orientation": "portrait-primary",
+  "icons": [
+    { "src": "/logo-arenah-icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "/logo-icon.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" },
+    { "src": "/favicon.ico", "sizes": "64x64", "type": "image/x-icon" }
+  ],
+  "shortcuts": [
+    { "name": "Restaurant", "url": "/restaurant", "description": "Commander un repas" },
+    { "name": "Hôtel", "url": "/hotel", "description": "Réserver une chambre" },
+    { "name": "Spectacles", "url": "/spectacles", "description": "Acheter des billets" }
+  ],
+  "categories": ["lifestyle", "entertainment", "food"],
+  "lang": "fr"
+}

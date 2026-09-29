@@ -1,0 +1,30 @@
+{
+  "appId": "com.arenah.app",
+  "productName": "ARENAH",
+  "directories": {
+    "output": "release"
+  },
+  "files": [
+    "dist/**/*",
+    "electron/**/*",
+    "public/favicon.ico"
+  ],
+  "win": {
+    "target": ["nsis"],
+    "icon": "public/favicon.ico"
+  },
+  "mac": {
+    "target": ["dmg"],
+    "icon": "public/favicon.ico"
+  },
+  "linux": {
+    "target": ["AppImage", "deb"],
+    "icon": "public/favicon.ico"
+  },
+  "nsis": {
+    "oneClick": false,
+    "allowToChangeInstallationDirectory": true,
+    "installerIcon": "public/favicon.ico",
+    "uninstallerIcon": "public/favicon.ico"
+  }
+}

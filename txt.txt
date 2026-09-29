@@ -1,0 +1,48 @@
+Je vais d'abord explorer la structure de votre projet pour faire un audit complet.
+
+---
+
+## Audit Complet – ARENAH Platform
+
+### Ce qui existe déjà (frontend)
+- **React 18 + TypeScript + Vite** — build solide, bien structuré
+- **10 modules métier** : Boutique, Restaurant, Hôtel, Gym, Piscine, Salon, Terrain, Event, Cybercafé, Spectacles
+- **SuperAdmin** : dashboard, gestion users, logs, settings
+- **Supabase SDK** déjà intégré (`@supabase/supabase-js 2.x`)
+- **Schéma SQL** existant dans `database.local.sql` — prêt à migrer
+- **Types TypeScript** bien définis dans `clientStore.ts` et `types.ts`
+
+### Le problème actuel ⚠️
+Tout le state client est en **localStorage** — aucune persistance réelle :
+- Commandes, réservations, panier → perdu au reload
+- Stock produits → non synchronisé
+- Paiements → simulés/mockés
+- Pas de backend Express/Node du tout — uniquement appels Supabase directs
+
+### Plan backend à implémenter
+
+**Priorité 1 – Fondations**
+- Créer les tables Supabase (migrer `database.local.sql` → PostgreSQL)
+- Auth réelle : Supabase Auth + Row Level Security (RLS)
+- Remplacer `localAuth.ts` et sessions localStorage
+
+**Priorité 2 – API métier**
+- Endpoints : `/api/products`, `/api/orders`, `/api/bookings/*` (hotel, gym, salon, field, event, show, cybercafe)
+- Migrer `clientStore.ts` → appels API réels via TanStack Query
+
+**Priorité 3 – Paiements & Stock**
+- Intégration MVola / Orange Money (Madagascar)
+- Gestion stock temps réel avec Supabase Realtime
+
+**Priorité 4 – Opérationnel**
+- Notifications push + email
+- Rapports PDF (jsPDF déjà installé)
+- Audit trail complet
+
+---
+
+**Par où voulez-vous commencer ?**
+
+1. Créer les tables Supabase + RLS policies ?
+2. Remplacer le premier module (ex: commandes boutique) ?
+3. Mettre en place l'API Express complète ?

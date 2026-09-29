@@ -1,0 +1,60 @@
+# ARENAH — Blueprint Render (backend uniquement)
+#
+# Le frontend est déployé séparément sur Vercel ; la base PostgreSQL est
+# hébergée sur Neon. Ce fichier ne décrit que l'API Node.
+#
+# Render lit ce fichier quand on crée un service via "Blueprint".
+# Les variables marquées sync:false ne sont PAS stockées ici : Render les
+# demande dans son interface au moment du déploiement. Aucun secret ne
+# transite donc par le dépôt.
+
+services:
+  - type: web
+    name: arenah-api
+    runtime: node
+    plan: free
+    region: frankfurt          # le plus proche de Madagascar parmi les régions gratuites
+    branch: main
+
+    buildCommand: npm install
+    startCommand: npm start
+
+    healthCheckPath: /api/health
+
+    envVars:
+      - key: NODE_ENV
+        value: production
+
+      # Render impose son propre port via cette variable.
+      - key: PORT
+        value: 10000
+
+      # ── Secrets : saisis dans l'interface Render, jamais ici ──────────────
+      - key: DATABASE_URL
+        sync: false            # chaîne de connexion Neon (avec ?sslmode=require)
+      - key: JWT_SECRET
+        sync: false
+      - key: CRON_TRIGGER_SECRET
+        sync: false
+
+      # ── URLs : à renseigner une fois le domaine Vercel connu ─────────────
+      - key: CLIENT_ORIGIN
+        sync: false            # ex. https://arenah.vercel.app
+      - key: FRONTEND_URL
+        sync: false
+      - key: API_BASE_URL
+        sync: false            # ex. https://arenah-api.onrender.com
+
+      # ── Tâches planifiées ────────────────────────────────────────────────
+      # Le plan gratuit met le service en veille après 15 min d'inactivité :
+      # un ordonnanceur interne ne se déclencherait jamais. Les tâches sont
+      # appelées de l'extérieur via POST /api/cron/:job.
+      - key: ENABLE_CRON
+        value: "false"
+
+      # ── Stockage ─────────────────────────────────────────────────────────
+      # Le disque de Render est éphémère sur le plan gratuit : les avatars
+      # envoyés disparaissent à chaque redéploiement. À remplacer par un
+      # stockage objet (voir server/services/storage.ts).
+      - key: STORAGE_DRIVER
+        value: local

@@ -1,0 +1,89 @@
+# ============================================================================
+# ARENAH — Environnement de DÉVELOPPEMENT / DÉMO avec Docker
+# (données fictives, mots de passe publics). Production : docker-compose.prod.yml
+#
+#   docker compose up -d --build     démarre tout (base + API + site)
+#   docker compose logs -f api       affiche les logs du serveur
+#   docker compose down              arrête (les données sont conservées)
+#   docker compose down -v           arrête ET efface la base
+#
+# Site  : http://localhost:8088
+# API   : http://localhost:3001   (Swagger : http://localhost:3001/api/docs)
+# Base  : localhost:5433 (utilisateur postgres, mot de passe dans .env)
+#
+# Les secrets viennent du fichier .env (voir .env.docker.example).
+# ============================================================================
+name: arenah
+
+services:
+  db:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: arenah
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?Renseignez DB_PASSWORD dans .env}
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"   # 5433 côté Windows pour ne pas gêner un PostgreSQL local
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d arenah"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  api:
+    build:
+      context: .
+      target: api
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      NODE_ENV: development
+      SEED_DEMO_DATA: "true"   # comptes + catalogue + avis FICTIFS : développement uniquement
+      PORT: 3001
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: arenah
+      DB_USER: postgres
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_SSL: "false"
+      JWT_SECRET: ${JWT_SECRET:?Renseignez JWT_SECRET dans .env}
+      JWT_EXPIRES_IN: 7d
+      CLIENT_ORIGIN: http://localhost:8088,http://localhost:8081,http://localhost:5173
+      FRONTEND_URL: http://localhost:8088
+      API_BASE_URL: http://localhost:3001
+      TRUST_PROXY: "1"
+      ENABLE_CRON: "true"
+      STORAGE_DRIVER: local
+      PAYMENT_ENV: sandbox
+    volumes:
+      - uploads:/app/public/uploads
+    ports:
+      - "3001:3001"
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://localhost:3001/api/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 40s
+
+  web:
+    build:
+      context: .
+      target: web
+      args:
+        VITE_API_URL: ""   # même domaine : /api est relayé par Nginx
+    restart: unless-stopped
+    depends_on:
+      api:
+        condition: service_healthy
+    ports:
+      - "8088:80"
+
+volumes:
+  db-data:
+  uploads:

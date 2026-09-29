@@ -1,0 +1,284 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Instrument+Serif&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 222 30% 8%;
+    --foreground: 220 15% 92%;
+
+    --card: 222 25% 12%;
+    --card-foreground: 220 15% 92%;
+
+    --popover: 222 25% 12%;
+    --popover-foreground: 220 15% 92%;
+
+    --primary: 200 100% 50%;
+    --primary-foreground: 222 30% 8%;
+
+    --secondary: 222 20% 18%;
+    --secondary-foreground: 220 15% 92%;
+
+    --muted: 222 20% 16%;
+    --muted-foreground: 220 10% 55%;
+
+    --accent: 170 80% 42%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 222 20% 18%;
+    --input: 222 20% 20%;
+    --ring: 200 100% 50%;
+
+    --radius: 0.75rem;
+
+    --sidebar-background: 222 35% 6%;
+    --sidebar-foreground: 220 15% 60%;
+    --sidebar-primary: 200 100% 55%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 222 25% 12%;
+    --sidebar-accent-foreground: 220 15% 92%;
+    --sidebar-border: 222 20% 12%;
+    --sidebar-ring: 200 100% 55%;
+
+    --success: 142 70% 45%;
+    --success-foreground: 0 0% 100%;
+    --warning: 38 92% 50%;
+    --warning-foreground: 0 0% 100%;
+    --info: 200 100% 50%;
+    --info-foreground: 0 0% 100%;
+
+    --chart-1: 200 100% 50%;
+    --chart-2: 170 80% 42%;
+    --chart-3: 38 92% 50%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 0 72% 51%;
+
+    --gradient-primary: linear-gradient(135deg, hsl(210 100% 50%), hsl(170 80% 42%));
+    --gradient-sidebar: linear-gradient(180deg, hsl(222 35% 6%), hsl(222 40% 4%));
+    --gradient-card: linear-gradient(135deg, hsl(222 25% 13%), hsl(222 25% 10%));
+    --gradient-glow: linear-gradient(135deg, hsl(200 100% 50% / 0.15), hsl(170 80% 42% / 0.1));
+
+    --shadow-sm: 0 1px 2px hsl(0 0% 0% / 0.3);
+    --shadow-md: 0 4px 16px hsl(0 0% 0% / 0.4);
+    --shadow-lg: 0 8px 32px hsl(0 0% 0% / 0.5);
+    --shadow-glow: 0 0 30px hsl(200 100% 50% / 0.15);
+    --shadow-glow-accent: 0 0 30px hsl(170 80% 42% / 0.12);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-feature-settings: "cv11", "ss01";
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-semibold tracking-tight;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: hsl(222 20% 22%);
+    border-radius: 999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(222 20% 30%);
+  }
+}
+
+@layer utilities {
+  .glass-card {
+    @apply bg-card/80 backdrop-blur-xl border border-border/50 rounded-xl;
+    box-shadow: var(--shadow-md);
+  }
+
+  .glass-card-glow {
+    @apply bg-card/80 backdrop-blur-xl border border-border/50 rounded-xl;
+    box-shadow: var(--shadow-md), var(--shadow-glow);
+  }
+
+  .sidebar-gradient {
+    background: var(--gradient-sidebar);
+  }
+
+  .text-gradient {
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .card-hover {
+    @apply transition-all duration-300 ease-out;
+  }
+  .card-hover:hover {
+    box-shadow: var(--shadow-lg), var(--shadow-glow);
+    transform: translateY(-2px);
+    border-color: hsl(200 100% 50% / 0.2);
+  }
+
+  .stat-glow {
+    box-shadow: var(--shadow-glow);
+  }
+
+  .bg-gradient-radial {
+    background: radial-gradient(ellipse at top left, hsl(200 100% 50% / 0.08), transparent 60%),
+                radial-gradient(ellipse at bottom right, hsl(170 80% 42% / 0.05), transparent 60%);
+  }
+
+  .shimmer {
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      hsl(200 100% 50% / 0.05) 50%,
+      transparent 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 2s infinite;
+  }
+
+  @keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+
+  .pulse-dot {
+    @apply relative;
+  }
+  .pulse-dot::after {
+    content: '';
+    @apply absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-success;
+    animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+  @keyframes pulse-ring {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.3); }
+  }
+
+  .border-glow {
+    border-color: hsl(200 100% 50% / 0.3);
+    box-shadow: inset 0 0 20px hsl(200 100% 50% / 0.05), var(--shadow-glow);
+  }
+}
+
+/* =========================================================
+   FRONT OFFICE CLIENT — Thème "Royal Gold"
+   Fond ivoire · Or royal · Noir profond
+   Scoped under .client-theme so the admin dark UI is untouched
+   ========================================================= */
+.client-theme {
+  /* Fond ivoire chaud */
+  --background: 40 30% 97%;
+  --foreground: 25 35% 10%;
+
+  --card: 40 25% 99%;
+  --card-foreground: 25 35% 10%;
+
+  --popover: 40 25% 99%;
+  --popover-foreground: 25 35% 10%;
+
+  /* Or royal comme couleur primaire */
+  --primary: 43 96% 44%;
+  --primary-foreground: 0 0% 100%;
+  --primary-soft: 43 90% 94%;
+  --primary-glow: hsl(43 96% 44% / 0.25);
+
+  --secondary: 40 20% 93%;
+  --secondary-foreground: 25 35% 10%;
+
+  --muted: 40 18% 93%;
+  --muted-foreground: 30 12% 42%;
+
+  --accent: 43 80% 90%;
+  --accent-foreground: 25 35% 10%;
+
+  --destructive: 0 72% 51%;
+  --destructive-foreground: 0 0% 100%;
+
+  --success: 152 50% 38%;
+  --warning: 38 85% 50%;
+
+  --border: 40 20% 88%;
+  --input: 40 20% 90%;
+  --ring: 43 96% 44%;
+
+  --gold: 43 96% 44%;
+  --gold-light: 43 96% 60%;
+  --gold-dark: 38 80% 30%;
+  --navy: 225 40% 12%;
+  --navy-foreground: 40 30% 97%;
+
+  --radius: 1rem;
+
+  --shadow-xs: 0 1px 2px hsl(30 40% 10% / 0.04);
+  --shadow-sm: 0 2px 8px hsl(30 40% 10% / 0.08);
+  --shadow-md: 0 8px 24px hsl(30 40% 10% / 0.12);
+  --shadow-lg: 0 24px 60px -12px hsl(30 40% 10% / 0.18);
+  --shadow-glow: 0 20px 60px -20px hsl(43 96% 44% / 0.35);
+  --shadow-gold: 0 8px 32px -4px hsl(43 96% 44% / 0.4);
+
+  --gradient-hero: radial-gradient(60% 50% at 20% 0%, hsl(43 96% 44% / 0.10), transparent 60%),
+                   radial-gradient(50% 40% at 100% 20%, hsl(225 40% 12% / 0.06), transparent 60%);
+  --gradient-primary: linear-gradient(135deg, hsl(43 96% 48%), hsl(36 90% 38%));
+  --gradient-gold: linear-gradient(135deg, hsl(43 96% 56%), hsl(38 90% 42%));
+  --gradient-trust: linear-gradient(180deg, hsl(225 40% 10%) 0%, hsl(225 35% 16%) 100%);
+  --gradient-royal: linear-gradient(135deg, hsl(225 40% 10%) 0%, hsl(225 38% 15%) 50%, hsl(43 60% 18%) 100%);
+
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
+}
+
+.client-theme .font-display {
+  font-family: 'Instrument Serif', 'Plus Jakarta Sans', serif;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+}
+
+.client-theme .bg-hero-gradient { background-image: var(--gradient-hero); }
+.client-theme .bg-trust-gradient { background-image: var(--gradient-trust); }
+.client-theme .bg-primary-gradient { background-image: var(--gradient-primary); }
+
+.client-theme .shadow-trust { box-shadow: var(--shadow-md); }
+.client-theme .shadow-trust-lg { box-shadow: var(--shadow-lg); }
+.client-theme .shadow-trust-glow { box-shadow: var(--shadow-glow); }
+
+.client-theme .card-lift {
+  transition: transform 280ms cubic-bezier(.2,.8,.2,1), box-shadow 280ms;
+}
+.client-theme .card-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+.client-theme .grid-pattern {
+  background-image:
+    linear-gradient(hsl(var(--border) / 0.5) 1px, transparent 1px),
+    linear-gradient(90deg, hsl(var(--border) / 0.5) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+}
+
+.client-theme .shadow-gold { box-shadow: var(--shadow-gold); }
+.client-theme .bg-gold-gradient { background: var(--gradient-gold); }
+.client-theme .bg-royal { background: var(--gradient-royal); }
+
+/* Scrollbar invisible for sub-nav */
+.client-theme nav { scrollbar-width: none; }
+.client-theme nav::-webkit-scrollbar { display: none; }

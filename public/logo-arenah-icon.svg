@@ -1,0 +1,102 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="gold1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%"   stop-color="#f5d67a"/>
+      <stop offset="35%"  stop-color="#d4af37"/>
+      <stop offset="65%"  stop-color="#c8971a"/>
+      <stop offset="100%" stop-color="#8B6010"/>
+    </linearGradient>
+    <linearGradient id="gold2" x1="100%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%"   stop-color="#f5d67a"/>
+      <stop offset="35%"  stop-color="#d4af37"/>
+      <stop offset="65%"  stop-color="#c8971a"/>
+      <stop offset="100%" stop-color="#8B6010"/>
+    </linearGradient>
+    <linearGradient id="textGold" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%"   stop-color="#f7e08a"/>
+      <stop offset="50%"  stop-color="#d4af37"/>
+      <stop offset="100%" stop-color="#9a6f10"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+
+  <!-- Background transparent — icône sur fond clair ou sombre -->
+
+  <!-- ══ ÉTOILES en haut ══ -->
+  <g filter="url(#glow)">
+    <polygon points="220,62 223,72 233,72 225,78 228,88 220,82 212,88 215,78 207,72 217,72" fill="url(#gold1)" opacity="0.9"/>
+    <polygon points="256,52 259,62 269,62 261,68 264,78 256,72 248,78 251,68 243,62 253,62" fill="url(#gold1)"/>
+    <polygon points="292,62 295,72 305,72 297,78 300,88 292,82 284,88 287,78 279,72 289,72" fill="url(#gold1)" opacity="0.9"/>
+  </g>
+
+  <!-- ══ BRANCHE GAUCHE — couronne de laurier ══ -->
+  <g fill="url(#gold1)">
+    <!-- feuilles montant de bas en haut, côté gauche -->
+    <ellipse cx="148" cy="340" rx="22" ry="10" transform="rotate(-40 148 340)"/>
+    <ellipse cx="128" cy="310" rx="22" ry="10" transform="rotate(-50 128 310)"/>
+    <ellipse cx="114" cy="278" rx="22" ry="10" transform="rotate(-58 114 278)"/>
+    <ellipse cx="106" cy="244" rx="22" ry="10" transform="rotate(-65 106 244)"/>
+    <ellipse cx="104" cy="210" rx="21" ry="9"  transform="rotate(-72 104 210)"/>
+    <ellipse cx="108" cy="176" rx="21" ry="9"  transform="rotate(-78 108 176)"/>
+    <ellipse cx="118" cy="145" rx="21" ry="9"  transform="rotate(-85 118 145)"/>
+    <ellipse cx="134" cy="117" rx="20" ry="9"  transform="rotate(-92 134 117)"/>
+    <ellipse cx="155" cy="94"  rx="20" ry="9"  transform="rotate(-100 155 94)"/>
+    <ellipse cx="180" cy="76"  rx="20" ry="8"  transform="rotate(-110 180 76)"/>
+    <!-- tige branche gauche -->
+    <path d="M 170 360 Q 130 300 100 230 Q 85 170 110 110 Q 130 80 165 68" stroke="url(#gold1)" stroke-width="5" fill="none" stroke-linecap="round"/>
+  </g>
+
+  <!-- ══ BRANCHE DROITE — couronne de laurier ══ -->
+  <g fill="url(#gold2)">
+    <ellipse cx="364" cy="340" rx="22" ry="10" transform="rotate(40 364 340)"/>
+    <ellipse cx="384" cy="310" rx="22" ry="10" transform="rotate(50 384 310)"/>
+    <ellipse cx="398" cy="278" rx="22" ry="10" transform="rotate(58 398 278)"/>
+    <ellipse cx="406" cy="244" rx="22" ry="10" transform="rotate(65 406 244)"/>
+    <ellipse cx="408" cy="210" rx="21" ry="9"  transform="rotate(72 408 210)"/>
+    <ellipse cx="404" cy="176" rx="21" ry="9"  transform="rotate(78 404 176)"/>
+    <ellipse cx="394" cy="145" rx="21" ry="9"  transform="rotate(85 394 145)"/>
+    <ellipse cx="378" cy="117" rx="20" ry="9"  transform="rotate(92 378 117)"/>
+    <ellipse cx="357" cy="94"  rx="20" ry="9"  transform="rotate(100 357 94)"/>
+    <ellipse cx="332" cy="76"  rx="20" ry="8"  transform="rotate(110 332 76)"/>
+    <!-- tige branche droite -->
+    <path d="M 342 360 Q 382 300 412 230 Q 427 170 402 110 Q 382 80 347 68" stroke="url(#gold2)" stroke-width="5" fill="none" stroke-linecap="round"/>
+  </g>
+
+  <!-- ══ POINTS décoratifs bas ══ -->
+  <g fill="url(#gold1)" opacity="0.85">
+    <circle cx="196" cy="368" r="5"/>
+    <circle cx="216" cy="376" r="4"/>
+    <circle cx="236" cy="381" r="3.5"/>
+    <circle cx="256" cy="383" r="5.5"/>
+    <circle cx="276" cy="381" r="3.5"/>
+    <circle cx="296" cy="376" r="4"/>
+    <circle cx="316" cy="368" r="5"/>
+  </g>
+
+  <!-- ══ VOLUTES / SCROLLWORK bas ══ -->
+  <g stroke="url(#gold1)" stroke-width="4" fill="none" stroke-linecap="round">
+    <path d="M 180 410 Q 200 395 220 410 Q 240 425 256 410 Q 272 395 292 410 Q 312 425 332 410"/>
+    <path d="M 200 430 Q 228 415 256 430 Q 284 415 312 430"/>
+    <!-- boucle gauche -->
+    <path d="M 160 430 Q 148 445 160 455 Q 172 465 180 452 Q 172 442 180 432"/>
+    <!-- boucle droite -->
+    <path d="M 352 430 Q 364 445 352 455 Q 340 465 332 452 Q 340 442 332 432"/>
+  </g>
+
+  <!-- ══ TEXTE "ARENAH" ══ -->
+  <text
+    x="256" y="310"
+    text-anchor="middle"
+    dominant-baseline="middle"
+    font-family="Georgia, 'Times New Roman', serif"
+    font-size="68"
+    font-weight="bold"
+    letter-spacing="8"
+    fill="url(#textGold)"
+    filter="url(#glow)"
+  >ARENAH</text>
+
+</svg>

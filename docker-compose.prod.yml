@@ -1,0 +1,105 @@
+# ============================================================================
+# ARENAH — PRODUCTION (serveur VPS avec Docker)
+#
+# Prérequis :
+#   - un serveur Linux avec Docker, ports 80 et 443 ouverts
+#   - un nom de domaine dont l'enregistrement DNS (A) pointe vers ce serveur
+#   - le fichier .env.production rempli (modèle : .env.production.example)
+#
+#   docker compose -f docker-compose.prod.yml --env-file .env.production up -d --build
+#
+# Différences avec docker-compose.yml (développement) :
+#   - HTTPS automatique (certificat Let's Encrypt renouvelé par Caddy)
+#   - la base et l'API ne sont PAS exposées sur Internet, seul Caddy l'est
+#   - NODE_ENV=production : secrets obligatoires et vérifiés au démarrage
+#   - AUCUNE donnée fictive (ni comptes de démo, ni faux avis)
+# ============================================================================
+name: arenah-prod
+
+services:
+  db:
+    image: postgres:17-alpine
+    restart: always
+    environment:
+      POSTGRES_DB: arenah
+      POSTGRES_USER: arenah
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?DB_PASSWORD manquant dans .env.production}
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U arenah -d arenah"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    # Pas de "ports" : la base n'est joignable que par l'API
+
+  api:
+    build:
+      context: .
+      target: api
+    restart: always
+    depends_on:
+      db:
+        condition: service_healthy
+    # Intégrations facultatives (SMTP, SMS, paiements…) lues dans le même fichier
+    env_file: .env.production
+    environment:
+      NODE_ENV: production
+      SEED_DEMO_DATA: "false"
+      AI_ALLOW_MODEL_DOWNLOAD: "false"   # modèle intégré à l'image, aucun accès Internet requis
+      PORT: 3001
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: arenah
+      DB_USER: arenah
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_SSL: "false"            # trafic interne au réseau Docker
+      JWT_SECRET: ${JWT_SECRET:?JWT_SECRET manquant dans .env.production}
+      CLIENT_ORIGIN: https://${DOMAIN:?DOMAIN manquant dans .env.production}
+      FRONTEND_URL: https://${DOMAIN}
+      API_BASE_URL: https://${DOMAIN}
+      TRUST_PROXY: "2"           # Caddy puis Nginx devant l'API
+      ENABLE_CRON: "true"
+      STORAGE_DRIVER: local
+    volumes:
+      - uploads:/app/public/uploads
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://localhost:3001/api/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 40s
+
+  web:
+    build:
+      context: .
+      target: web
+      args:
+        VITE_API_URL: ""         # même domaine
+    restart: always
+    depends_on:
+      api:
+        condition: service_healthy
+
+  caddy:
+    image: caddy:2-alpine
+    restart: always
+    depends_on:
+      - web
+    environment:
+      DOMAIN: ${DOMAIN}
+      ACME_EMAIL: ${ACME_EMAIL:?ACME_EMAIL manquant dans .env.production}
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - ./docker/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+
+volumes:
+  db-data:
+  uploads:
+  caddy-data:
+  caddy-config:
